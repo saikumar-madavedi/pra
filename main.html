@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .navbar a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 12px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar .right {
+            float: right;
+        }
+
+        .header,
+        .title,
+        .search-form,
+        .flight-table {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ccc;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .form-group {
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
+
+        section {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="#" onclick="showSection('homeSection')">Home</a>
+        <a href="#" onclick="showSection('addCarrierSection')">Add Carrier</a>
+        <a href="#" onclick="showSection('editCarrierSection')">Edit/Delete Carrier</a>
+        <a href="#" onclick="showSection('addFlightSection')">Add Flight</a>
+        <a href="#" onclick="showSection('editFlightSection')">Edit/Delete Flight</a>
+        <a href="#" class="right">Logout</a>
+    </div>
+
+    <div class="header">
+        <h1>Welcome to Airline Management System</h1>
+    </div>
+
+    <!-- Home Section -->
+    <section id="homeSection">
+        <div class="search-form">
+            <h2>Search Flights</h2>
+            <form id="searchFlightsForm">
+                <label for="origin">Origin</label>
+                <select id="origin" name="origin" required>
+                    <option value="City1">City 1</option>
+                    <option value="City2">City 2</option>
+                    <option value="City3">City 3</option>
+                </select>
+
+                <label for="destination">Destination</label>
+                <select id="destination" name="destination" required>
+                    <option value="City1">City 1</option>
+                    <option value="City2">City 2</option>
+                    <option value="City3">City 3</option>
+                </select>
+
+                <button type="button" onclick="searchFlights()">Search Flights</button>
+            </form>
+        </div>
+
+        <div class="flight-table" id="flightTable" style="display:none;">
+            <h3>Available Flights</h3>
+            <table>
+                <tr>
+                    <th>Carrier Name</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Fare</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Carrier 1</td>
+                    <td>City 1</td>
+                    <td>City 2</td>
+                    <td>$500</td>
+                    <td><button type="button" onclick="bookFlight()">Book</button></td>
+                </tr>
+                <tr>
+                    <td>Carrier 2</td>
+                    <td>City 2</td>
+                    <td>City 3</td>
+                    <td>$700</td>
+                    <td><button type="button" onclick="bookFlight()">Book</button></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- Add Carrier Section -->
+    <section id="addCarrierSection">
+        <h2>Add Carrier Information</h2>
+        <form id="addCarrierForm">
+            <div class="form-group">
+                <label for="carrierName">Carrier Name</label>
+                <input type="text" id="carrierName" name="carrierName" maxlength="50" required>
+            </div>
+
+            <label>Discount Percentage</label>
+            <hr>
+
+            <div class="form-group">
+                <label for="advance30Days">30 Days Advance Booking</label>
+                <input type="number" id="advance30Days" name="advance30Days" required>
+            </div>
+            <div class="form-group">
+                <label for="advance60Days">60 Days Advance Booking</label>
+                <input type="number" id="advance60Days" name="advance60Days" required>
+            </div>
+            <div class="form-group">
+                <label for="advance90Days">90 Days Advance Booking</label>
+                <input type="number" id="advance90Days" name="advance90Days" required>
+            </div>
+            <div class="form-group">
+                <label for="bulkBooking">Bulk Booking</label>
+                <input type="number" id="bulkBooking" name="bulkBooking" required>
+            </div>
+            <div class="form-group">
+                <label for="silverUser">Silver User</label>
+                <input type="number" id="silverUser" name="silverUser" required>
+            </div>
+            <div class="form-group">
+                <label for="goldUser">Gold User</label>
+                <input type="number" id="goldUser" name="goldUser" required>
+            </div>
+            <div class="form-group">
+                <label for="platinumUser">Platinum User</label>
+                <input type="number" id="platinumUser" name="platinumUser" required>
+            </div>
+
+            <label>Refund Percentage</label>
+            <hr>
+
+            <div class="form-group">
+                <label for="refund2Days">2 Days Before Travel Date</label>
+                <input type="number" id="refund2Days" name="refund2Days" required>
+            </div>
+            <div class="form-group">
+                <label for="refund10Days">10 Days Before Travel Date</label>
+                <input type="number" id="refund10Days" name="refund10Days" required>
+            </div>
+            <div class="form-group">
+                <label for="refund20Days">20 Days or More Before Travel Date</label>
+                <input type="number" id="refund20Days" name="refund20Days" required>
+            </div>
+
+            <button type="button" onclick="addCarrier()">Add Carrier</button>
+        </form>
+
+        <p class="success-message" id="carrierSuccessMessage" style="display:none;">
+            Carrier Information Saved Successfully!!! - Carrier ID generated is <strong>CR12345</strong>
+        </p>
+    </section>
+
+    <!-- Edit/Delete Carrier Section -->
+    <section id="editCarrierSection">
+        <h2>Edit/Delete Carrier Information</h2>
+        <form id="searchCarrierForm">
+            <div class="form-group">
+                <label for="carrierSelect">Carrier Name</label>
+                <select id="carrierSelect" name="carrierSelect" required>
+                    <option value="Carrier1">Carrier 1</option>
+                    <option value="Carrier2">Carrier 2</option>
+                    <option value="Carrier3">Carrier 3</option>
+                </select>
+            </div>
+            <button type="button" onclick="searchCarrier()">Search</button>
+        </form>
+
+        <div id="carrierDetails" style="display:none;">
+            <h3>Carrier Details</h3>
+            <form id="editCarrierForm">
+                <div class="form-group">
+                    <label for="carrierName">Carrier Name</label>
+                    <input type="text" id="carrierName" name="carrierName" readonly>
+                </div>
+
+                <label>Discount Percentage</label>
+                <hr>
+
+                <div class="form-group">
+                    <label for="advance60DaysEdit">60 Days Advance Booking</label>
+                    <input type="number" id="advance60DaysEdit" name="advance60DaysEdit">
+                </div>
+                <div class="form-group">
+                    <label for="advance90DaysEdit">90 Days Advance Booking</label>
+                    <input type="number" id="advance90DaysEdit" name="advance90DaysEdit">
+                </div>
+                <div class="form-group">
+                    <label for="bulkBookingEdit">Bulk Booking</label>
+                    <input type="number" id="bulkBookingEdit" name="bulkBookingEdit">
+                </div>
+                <div class="form-group">
+                    <label for="silverUserEdit">Silver User</label>
+                    <input type="number" id="silverUserEdit" name="silverUserEdit">
+                </div>
+                <div class="form-group">
+                    <label for="goldUserEdit">Gold User</label>
+                    <input type="number" id="goldUserEdit" name="goldUserEdit">
+                </div>
+                <div class="form-group">
+                    <label for="platinumUserEdit">Platinum User</label>
+                    <input type="number" id="platinumUserEdit" name="platinumUserEdit">
+                </div>
+
+                <label>Refund Percentage</label>
+                <hr>
+
+                <div class="form-group">
+                    <label for="refund2DaysEdit">2 Days Before Travel Date</label>
+                    <input type="number" id="refund2DaysEdit" name="refund2DaysEdit">
+                </div>
+                <div class="form-group">
+                    <label for="refund10DaysEdit">10 Days Before Travel Date</label>
+                    <input type="number" id="refund10DaysEdit" name="refund10DaysEdit">
+                </div>
+                <div class="form-group">
+                    <label for="refund20DaysEdit">20 Days or More Before Travel Date</label>
+                    <input type="number" id="refund20DaysEdit" name="refund20DaysEdit">
+                </div>
+
+                <button type="button" onclick="editCarrier()">Edit Carrier</button>
+                <button type="button" onclick="deleteCarrier()">Delete Carrier</button>
+            </form>
+        </div>
+
+        <p class="success-message" id="editCarrierSuccessMessage" style="display:none;"></p>
+    </section>
+
+    <!-- Add Flight Section -->
+    <section id="addFlightSection">
+        <h2>Add Flight Information</h2>
+        <form id="addFlightForm">
+            <div class="form-group">
+                <label for="flightCarrierSelect">Carrier Name</label>
+                <select id="flightCarrierSelect" name="flightCarrierSelect" required>
+                    <option value="Carrier1">Carrier 1</option>
+                    <option value="Carrier2">Carrier 2</option>
+                    <option value="Carrier3">Carrier 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="flightOrigin">Origin</label>
+                <select id="flightOrigin" name="flightOrigin" required>
+                    <option value="City1">City 1</option>
+                    <option value="City2">City 2</option>
+                    <option value="City3">City 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="flightDestination">Destination</label>
+                <select id="flightDestination" name="flightDestination" required>
+                    <option value="City1">City 1</option>
+                    <option value="City2">City 2</option>
+                    <option value="City3">City 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="airFare">Air Fare</label>
+                <input type="number" id="airFare" name="airFare" required>
+            </div>
+            <div class="form-group">
+                <label for="seatCapacityBusiness">Seat Capacity (Business Class)</label>
+                <input type="number" id="seatCapacityBusiness" name="seatCapacityBusiness" required>
+            </div>
+            <div class="form-group">
+                <label for="seatCapacityEconomy">Seat Capacity (Economy Class)</label>
+                <input type="number" id="seatCapacityEconomy" name="seatCapacityEconomy" required>
+            </div>
+            <div class="form-group">
+                <label for="seatCapacityExecutive">Seat Capacity (Executive Class)</label>
+                <input type="number" id="seatCapacityExecutive" name="seatCapacityExecutive" required>
+            </div>
+
+            <button type="button" onclick="addFlight()">Add Flight</button>
+        </form>
+
+        <p class="success-message" id="flightSuccessMessage" style="display:none;">
+            Flight Information Saved Successfully!!! - Flight ID generated is <strong>FL12345</strong>
+        </p>
+    </section>
+
+    <!-- Edit/Delete Flight Section -->
+    <section id="editFlightSection">
+        <h2>Edit/Delete Flight Information</h2>
+        <form id="searchFlightForm">
+            <div class="form-group">
+                <label for="flightCarrierSelectEdit">Carrier Name</label>
+                <select id="flightCarrierSelectEdit" name="flightCarrierSelectEdit" required>
+                    <option value="Carrier1">Carrier 1</option>
+                    <option value="Carrier2">Carrier 2</option>
+                    <option value="Carrier3">Carrier 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="flightOriginEdit">Origin</label>
+                <select id="flightOriginEdit" name="flightOriginEdit" required>
+                    <option value="City1">City 1</option>
+                    <option value="City2">City 2</option>
+                    <option value="City3">City 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="flightDestinationEdit">Destination</label>
+                <select id="flightDestinationEdit" name="flightDestinationEdit" required>
+                    <option value="City1">City 1</option>
+                    <option value="City2">City 2</option>
+                    <option value="City3">City 3</option>
+                </select>
+            </div>
+            <button type="button" onclick="searchFlight()">Search</button>
+        </form>
+
+        <div id="flightDetails" style="display:none;">
+            <h3>Flight Details</h3>
+            <form id="editFlightForm">
+                <div class="form-group">
+                    <label for="carrierNameEdit">Carrier Name</label>
+                    <input type="text" id="carrierNameEdit" name="carrierNameEdit" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="flightOriginDetail">Origin</label>
+                    <input type="text" id="flightOriginDetail" name="flightOriginDetail">
+                </div>
+                <div class="form-group">
+                    <label for="flightDestinationDetail">Destination</label>
+                    <input type="text" id="flightDestinationDetail" name="flightDestinationDetail">
+                </div>
+                <div class="form-group">
+                    <label for="airFareEdit">Air Fare</label>
+                    <input type="number" id="airFareEdit" name="airFareEdit">
+                </div>
+                <div class="form-group">
+                    <label for="seatCapacityBusinessEdit">Seat Capacity (Business Class)</label>
+                    <input type="number" id="seatCapacityBusinessEdit" name="seatCapacityBusinessEdit">
+                </div>
+                <div class="form-group">
+                    <label for="seatCapacityEconomyEdit">Seat Capacity (Economy Class)</label>
+                    <input type="number" id="seatCapacityEconomyEdit" name="seatCapacityEconomyEdit">
+                </div>
+                <div class="form-group">
+                    <label for="seatCapacityExecutiveEdit">Seat Capacity (Executive Class)</label>
+                    <input type="number" id="seatCapacityExecutiveEdit" name="seatCapacityExecutiveEdit">
+                </div>
+
+                <button type="button" onclick="editFlight()">Edit Flight</button>
+                <button type="button" onclick="deleteFlight()">Delete Flight</button>
+            </form>
+        </div>
+
+        <p class="success-message" id="editFlightSuccessMessage" style="display:none;"></p>
+    </section>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function addCarrier() {
+            document.getElementById('carrierSuccessMessage').style.display = 'block';
+        }
+
+        function searchCarrier() {
+            document.getElementById('carrierDetails').style.display = 'block';
+        }
+
+        function editCarrier() {
+            document.getElementById('editCarrierSuccessMessage').textContent = 'Carrier details are updated successfully!';
+            document.getElementById('editCarrierSuccessMessage').style.display = 'block';
+        }
+
+        function deleteCarrier() {
+            document.getElementById('editCarrierSuccessMessage').textContent = 'Carrier detail is removed from the system!';
+            document.getElementById('editCarrierSuccessMessage').style.display = 'block';
+        }
+
+        function addFlight() {
+            document.getElementById('flightSuccessMessage').style.display = 'block';
+        }
+
+        function searchFlight() {
+            document.getElementById('flightDetails').style.display = 'block';
+        }
+
+        function editFlight() {
+            document.getElementById('editFlightSuccessMessage').textContent = 'Flight Information Updated Successfully!!!';
+            document.getElementById('editFlightSuccessMessage').style.display = 'block';
+        }
+
+        function deleteFlight() {
+            document.getElementById('editFlightSuccessMessage').textContent = 'Flight details are removed Successfully!!!';
+            document.getElementById('editFlightSuccessMessage').style.display = 'block';
+        }
+
+        function searchFlights() {
+            document.getElementById('flightTable').style.display = 'block';
+        }
+
+        function bookFlight() {
+            alert('Flight booked successfully!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            showSection('homeSection');
+        });
+    </script>
+</body>
+
+</html>
